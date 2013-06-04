@@ -9,7 +9,7 @@
 #include "util.h"
 #include "pixel.h"
 
-#define velocidadeDoBarcoInicial 1
+#define velocidadeDoBarcoInicial 50
 #define larguraDoRioInicial 100
 #define fluxoDesejadoInicial 50
 #define alturaDaGrade 30
@@ -87,7 +87,7 @@ int main (int argc, char *argv[]) {
     
     initOutput(velocidadeDoBarco);
     
-    outputArray(grade, alturaDaGrade, larguraDoRio, indice);
+    startOutput(grade, alturaDaGrade, larguraDoRio, indice);
     
     clearScreen();
     
@@ -95,7 +95,7 @@ int main (int argc, char *argv[]) {
      Frames subsequentes
      */
     
-    for(;;){
+    /*for(;;){
         indice = (indice - 1+alturaDaGrade) % alturaDaGrade;
         
         criaProximoFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, indice, dIlha, pIlha);
@@ -105,14 +105,13 @@ int main (int argc, char *argv[]) {
         clearScreen();
         
         nanosleep(&tim, &tim2);
-    }
+    }*/
     
     /*
      Frees
      */
     
-    freeGrade(grade, alturaDaGrade, larguraDoRio);
-    freeOutput ();
+    /*freeGrade(grade, alturaDaGrade, larguraDoRio);*/
     
     return 0;
 }
