@@ -96,11 +96,7 @@ int main (int argc, char *argv[]) {
     grade = initGrade(alturaDaGrade, larguraDoRio);
     
     criaPrimeiroFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, dIlha, pIlha);
-    
-    initOutput(velocidadeDoBarco);
-    
-    startOutput(grade, alturaDaGrade, larguraDoRio, indice);
-    
+            
     clearScreen();
     
     /*
@@ -164,13 +160,13 @@ int main (int argc, char *argv[]) {
         
     }
     
-    freeOutput();
-    
     /*
      Frees
      */
     
-    /*freeGrade(grade, alturaDaGrade, larguraDoRio);*/
+    freeOutput();
+    
+    freeGrade(grade, alturaDaGrade, larguraDoRio);
     
     return 0;
 }

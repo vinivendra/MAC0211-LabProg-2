@@ -19,10 +19,6 @@ void outputArray (pixel **array, int altura, int largura, int indice);
   Funções
 */
 
-void initOutput () {
-    
-}
-
 void outputArray (pixel **array, int altura, int largura, int indice) { /* Imprime a grade */
   int i;
     
