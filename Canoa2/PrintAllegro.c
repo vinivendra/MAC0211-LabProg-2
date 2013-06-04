@@ -27,7 +27,7 @@ void freeOutput ();
 void initOutput (float velocidadeDoBarco) {
     
     if(!al_init()) {        /* Inicializa o allegro. Se falhar, imprime o erro e sai. */
-    zx    al_show_native_message_box(display, "Error", "Error", "Failed to initialize allegro!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        al_show_native_message_box(display, "Error", "Error", "Failed to initialize allegro!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         exit(-1);
     }
     
