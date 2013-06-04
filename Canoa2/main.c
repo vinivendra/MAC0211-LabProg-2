@@ -14,7 +14,7 @@
 #define velocidadeDoBarcoInicial 10
 #define larguraDoRioInicial 100
 #define fluxoDesejadoInicial 50
-#define alturaDaGrade 30
+#define alturaDaGrade 600
 #define distanciaEntreIlhasInicial 10
 #define probabilidadeDeObstaculosInicial 0.5
 #define limiteDasMargens 0.9

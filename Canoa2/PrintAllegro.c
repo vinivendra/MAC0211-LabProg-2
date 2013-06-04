@@ -17,8 +17,8 @@ typedef int BOOL;
  */
 
 void outputArray (pixel **array, int altura, int largura, int indice) {
-    ALLEGRO_COLOR terra = al_map_rgb(110, 60, 40);
-    ALLEGRO_COLOR agua = al_map_rgb(35, 200, 240);
+    ALLEGRO_COLOR terra = al_map_rgb(102, 51, 0);
+    ALLEGRO_COLOR agua = al_map_rgb(51,153,255);
     
     int i, j;
     
