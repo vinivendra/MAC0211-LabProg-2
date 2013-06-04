@@ -3,13 +3,13 @@ testeName = teste
 execOptions =  -g -o $(execName) -lm -lc
 testeOptions = -g -o $(testeName) -lm -lc
 objOptions = -g -pedantic -Wall -lm -lc
-objectsASCII = main.o PrintASCII.o grade.o rio.o util.o pixel.o
-objectsTeste = teste.o PrintASCII.o grade.o rio.o util.o pixel.o rotinasTeste.o
+objectsAllegro = main.o PrintAllegro.o grade.o rio.o util.o pixel.o
+objectsTeste = teste.o PrintAllegro.o grade.o rio.o util.o pixel.o rotinasTeste.o
 
 
 .PHONY:ascii
-ascii: $(objectsASCII)
-	gcc $(objectsASCII) $(execOptions)
+ascii: $(objectsAllegro)
+	gcc $(objectsAllegro) $(execOptions)
 
 .PHONY:teste
 teste: $(objectsTeste)
@@ -21,8 +21,8 @@ teste.o: teste.c
 main.o: main.c
 	gcc -c main.c $(objOptions)
 
-PrintASCII.o: PrintASCII.c
-	gcc -c PrintASCII.c $(objOptions)
+PrintAllegro.o: PrintAllegro.c
+	gcc -c PrintAllegro.c $(objOptions)
     
 grade.o: grade.c
 	gcc -c grade.c $(objOptions)
