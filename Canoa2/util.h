@@ -6,12 +6,6 @@
 #include <string.h>
 
 /*
- Defines
-*/
-
-#define clearScreen() printf("%c[2J%c[1;1H", 27, 27)
-
-/*
  Protótipos
 */
 

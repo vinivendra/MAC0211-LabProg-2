@@ -5,16 +5,23 @@
 #include "rio.h"
 #include "pixel.h"
 
+#define clearScreen() printf("%c[2J%c[1;1H", 27, 27)
+
 /*
   Protótipos
 */
 
+void initOutput ();
 void outputLine (pixel *linha, int largura);
 void outputArray (pixel **array, int altura, int largura, int indice);
 
 /*
   Funções
 */
+
+void initOutput () {
+    
+}
 
 void outputArray (pixel **array, int altura, int largura, int indice) { /* Imprime a grade */
   int i;

@@ -85,6 +85,8 @@ int main (int argc, char *argv[]) {
     
     criaPrimeiroFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, dIlha, pIlha);
     
+    initOutput();
+    
     outputArray(grade, alturaDaGrade, larguraDoRio, indice);
     
     clearScreen();
@@ -110,11 +112,6 @@ int main (int argc, char *argv[]) {
      */
     
     freeGrade(grade, alturaDaGrade, larguraDoRio);
-    
-    al_init();
-    al_create_display(640, 480);
-    al_clear_to_color(al_map_rgb_f(1, 1, 0));
-    al_flip_display();
     
     
     return 0;
