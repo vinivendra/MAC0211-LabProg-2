@@ -39,7 +39,7 @@ void criaProximoFrame (pixel **grade, int altura, int largura, float limiteDasMa
 void freeGrade(pixel** grade, int altura, int largura){
     int i;
     
-    for(i = 0; i < largura; i++)
+    for(i = 0; i < altura; i++)
         free(grade[i]);
     
     free(grade);

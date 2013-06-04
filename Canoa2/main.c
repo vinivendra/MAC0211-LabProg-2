@@ -11,7 +11,7 @@
 #include "util.h"
 #include "pixel.h"
 
-#define velocidadeDoBarcoInicial 2
+#define velocidadeDoBarcoInicial 10
 #define larguraDoRioInicial 100
 #define fluxoDesejadoInicial 50
 #define alturaDaGrade 30
@@ -43,8 +43,7 @@ int main (int argc, char *argv[]) {
     float pIlha = probabilidadeDeObstaculosInicial;
     float limiteMargens = limiteDasMargens;
     
-    struct timespec tim2;
-    struct timespec tim;
+    bool doexit = NO;
     
     int seed = 1;
     int verbose = 0;
@@ -73,13 +72,6 @@ int main (int argc, char *argv[]) {
                 "Pressione Enter para continuar...\n", velocidadeDoBarco, larguraDoRio, seed, fluxoDesejado, verbose, pIlha, dIlha, limiteMargens);
         getchar();
     }
-    
-    /*
-     Inicialização
-     */
-    
-    tim.tv_sec  = 0;
-    tim.tv_nsec = 100000000/velocidadeDoBarco;
     
     /*
      Seed
@@ -141,9 +133,7 @@ int main (int argc, char *argv[]) {
      */
     
     al_start_timer(timer);
-    
-    bool doexit = NO;
-    
+        
     outputArray(grade, alturaDaGrade, larguraDoRio, indice);
     
     while (!doexit) {
@@ -156,9 +146,12 @@ int main (int argc, char *argv[]) {
         
         else if (ev.type == ALLEGRO_EVENT_TIMER && al_is_event_queue_empty(event_queue)) {   /* If the event was the timer reaching the instant for another loop */
             
+            indice = (indice - 1+alturaDaGrade) % alturaDaGrade;
+            
             criaProximoFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, indice, dIlha, pIlha);
             
             outputArray(grade, alturaDaGrade, larguraDoRio, indice);
+            
         }
         /* According to the wiki, we only want to redraw the frame if the event queue is completely empty.
          "Otherwise, the update loop could fall very far behind".*/
