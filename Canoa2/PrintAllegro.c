@@ -17,22 +17,27 @@ typedef int BOOL;
 */
 
 void outputArray (pixel **array, int altura, int largura, int indice) {
-    outputLine(array[0], largura);
+    int i;
+    
+    for (i = 0; i < altura; i ++) /* Imprime cada linha, de trás para frente */
+        outputLine(array[(i+indice)%altura], largura, (i+indice)%altura);
 }
 
-void outputLine (pixel *linha, int largura) {
+void outputLine (pixel *linha, int largura, int indice) {
     
     ALLEGRO_COLOR terra = al_map_rgb(110, 60, 40);
     ALLEGRO_COLOR agua = al_map_rgb(35, 200, 240);
     int i = 0;
     
+    int size = (640/largura);
+    
     al_clear_to_color(al_map_rgb_f(0, 0, 0));
     
     for (i = 0; i < largura; i ++) {
         if (tipo(&linha[i]) == '#') {
-            al_draw_filled_rectangle((640/largura)*(i+1), 0, (640/largura)*i, 640/largura, terra);
+            al_draw_filled_rectangle(size*i, size*indice, size*(i+1), size*(indice+1), terra);
         }
-        else al_draw_filled_rectangle((640/largura)*(i+1), 0, (640/largura)*i, 640/largura, agua);
+        else al_draw_filled_rectangle(size*i, size*indice, size*(i+1), size*(indice+1), agua);
     }
     
     al_draw_filled_rectangle(100, 100, 200, 200, terra);

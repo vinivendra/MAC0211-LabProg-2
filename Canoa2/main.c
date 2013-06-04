@@ -108,6 +108,8 @@ int main (int argc, char *argv[]) {
         exit(-1);
     }
     
+    al_init_primitives_addon();
+    
     display = al_create_display(640, 480);      /* Cria o display */
     
     if(!display) {          /* Caso haja erro na criação, imprime e sai. */
@@ -117,7 +119,7 @@ int main (int argc, char *argv[]) {
     
     event_queue = al_create_event_queue();
     if(!event_queue) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to create display!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        al_show_native_message_box(display, "Error", "Error", "Failed to create event queue!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         freeOutput();
         exit(-1);
     }
