@@ -10,7 +10,7 @@
 #include "util.h"
 #include "pixel.h"
 
-#define velocidadeDoBarcoInicial 50
+#define velocidadeDoBarcoInicial 2
 #define larguraDoRioInicial 100
 #define fluxoDesejadoInicial 50
 #define alturaDaGrade 30
@@ -152,6 +152,8 @@ int main (int argc, char *argv[]) {
         }
         
         else if (ev.type == ALLEGRO_EVENT_TIMER && al_is_event_queue_empty(event_queue)) {   /* If the event was the timer reaching the instant for another loop */
+            
+            criaProximoFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, indice, dIlha, pIlha);
             
             outputArray(grade, alturaDaGrade, larguraDoRio, indice);
         }
