@@ -16,7 +16,7 @@
  Protótipos
 */
 
-void initOutput ();
+void initOutput (float velocidadeDoBarco);
 void freeOutput ();
 void clearScreen ();
 void outputArray (pixel **array, int altura, int largura, int indice);

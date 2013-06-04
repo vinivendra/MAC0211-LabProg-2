@@ -85,7 +85,7 @@ int main (int argc, char *argv[]) {
     
     criaPrimeiroFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, dIlha, pIlha);
     
-    initOutput();
+    initOutput(velocidadeDoBarco);
     
     outputArray(grade, alturaDaGrade, larguraDoRio, indice);
     
