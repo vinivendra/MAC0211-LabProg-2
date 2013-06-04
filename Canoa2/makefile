@@ -1,8 +1,8 @@
 execName = ep2
 testeName = teste
-execOptions =  -g -o $(execName) -lm -lc -lallegro -lallegro_image -lallegro_dialog
-testeOptions = -g -o $(testeName) -lm -lc -lallegro -lallegro_image -lallegro_dialog
-objOptions = -g -pedantic -Wall -lm -lc -lallegro
+execOptions =  -g -o $(execName) -lm -lc -lallegro -lallegro_primitives -lallegro_dialog
+testeOptions = -g -o $(testeName) -lm -lc -lallegro -lallegro_primitives -lallegro_dialog
+objOptions = -g -pedantic -Wall -lm -lc -lallegro -lallegro_dialog -lallegro_primitives
 objectsAllegro = main.o PrintAllegro.o grade.o rio.o util.o pixel.o
 objectsTeste = teste.o PrintAllegro.o grade.o rio.o util.o pixel.o rotinasTeste.o
 
