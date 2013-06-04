@@ -1,14 +1,14 @@
 execName = ep2
 testeName = teste
-execOptions =  -g -o $(execName) -lm -lc
-testeOptions = -g -o $(testeName) -lm -lc
-objOptions = -g -pedantic -Wall -lm -lc
+execOptions =  -g -o $(execName) -lm -lc -lallegro -lallegro_image -lallegro_dialog
+testeOptions = -g -o $(testeName) -lm -lc -lallegro -lallegro_image -lallegro_dialog
+objOptions = -g -pedantic -Wall -lm -lc -lallegro
 objectsAllegro = main.o PrintAllegro.o grade.o rio.o util.o pixel.o
 objectsTeste = teste.o PrintAllegro.o grade.o rio.o util.o pixel.o rotinasTeste.o
 
 
-.PHONY:ascii
-ascii: $(objectsAllegro)
+.PHONY:allegro
+allegro: $(objectsAllegro)
 	gcc $(objectsAllegro) $(execOptions)
 
 .PHONY:teste
@@ -19,11 +19,11 @@ teste.o: teste.c
 	gcc -c teste.c $(objOptions)
 
 main.o: main.c
-	gcc -c main.c $(objOptions)
+	gcc -c main.c $(objOptions) 
 
 PrintAllegro.o: PrintAllegro.c
 	gcc -c PrintAllegro.c $(objOptions)
-    
+
 grade.o: grade.c
 	gcc -c grade.c $(objOptions)
 
@@ -35,7 +35,7 @@ util.o: util.c
 
 pixel.o: pixel.c
 	gcc -c pixel.c $(objOptions)
-    
+
 rotinasTeste.o: rotinasTeste.c
 	gcc -c rotinasTeste.c $(objOptions)
 
