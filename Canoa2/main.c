@@ -112,7 +112,7 @@ int main (int argc, char *argv[]) {
      */
     
     freeGrade(grade, alturaDaGrade, larguraDoRio);
-    
+    freeOutput ();
     
     return 0;
 }

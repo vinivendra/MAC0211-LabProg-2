@@ -17,6 +17,7 @@
 */
 
 void initOutput ();
+void freeOutput ();
 void clearScreen ();
 void outputArray (pixel **array, int altura, int largura, int indice);
 void outputLine (pixel *linha, int largura);
