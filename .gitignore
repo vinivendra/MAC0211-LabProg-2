@@ -1,0 +1,8 @@
+*.DS_Store
+*xcuserstate
+*xcuserdata
+*.o
+ep3
+*~
+**/Canoa2/en.lproj
+*.plist
