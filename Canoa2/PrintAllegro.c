@@ -19,15 +19,15 @@ typedef int BOOL;
 #define playerSize 30
 
 /*
- Implementação
- */
+  Implementação
+*/
 
 void outputArray (pixel **array, int altura, int largura, int indice) {
     ALLEGRO_COLOR terra = al_map_rgb(110, 60, 40);
     ALLEGRO_COLOR agua = al_map_rgb(35, 200, 240);
     ALLEGRO_COLOR color = al_map_rgb(180, 1, 2);
     
-    int i, j;
+  int size = (640/largura);
     
     int size = (5);
     
