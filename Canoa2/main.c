@@ -236,7 +236,7 @@ int main (int argc, char *argv[]) {
             criaProximoFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, indice, dIlha, pIlha);
             
             /* Imprime a grade na tela */
-            outputArray(grade, alturaDaGrade, larguraDoRio, indice, player_x, player_y);
+            outputArray(grade, alturaDaGrade, larguraDoRio, indice, player_x, player_y, tamPixel);
             
         }
 

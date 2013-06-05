@@ -16,13 +16,13 @@ typedef int BOOL;
 #define TERRA '#'
 #define AGUA '.'
 
-#define playerSize 30
+#define playertamPixel 30
 
 /*
  Implementação
  */
 
-void outputArray (pixel **array, int altura, int largura, int indice, int player_x, int player_y) {
+void outputArray (pixel **array, int altura, int largura, int indice, int player_x, int player_y, int tamPixel) {
     ALLEGRO_COLOR terra = al_map_rgb(110, 60, 40);      /* Cores */
     ALLEGRO_COLOR agua = al_map_rgb(51, 153, 255);
     ALLEGRO_COLOR ilha = al_map_rgb(6, 96, 0);
@@ -31,10 +31,6 @@ void outputArray (pixel **array, int altura, int largura, int indice, int player
     int i, j;
     int ilha0 = 999999, ilhaf = 0;      /* Variáveis que guardam o começo de uma ilha e o final dela */
     
-#warning Size tem que ser passado como argumento a partir do main
-    
-    int size = 5;
-    
     
     for (i = 0; i < altura; i ++) { /* Imprime uma linha de cada vez */
         
@@ -42,7 +38,7 @@ void outputArray (pixel **array, int altura, int largura, int indice, int player
         int TMargemDireita = margemDireita(array[(i+indice)%altura], largura);
         
         /* Desenha a margem esquerda */
-        al_draw_filled_rectangle(0, size*i, size*(TMargemEsquerda - 2), size*(i+1), terra);
+        al_draw_filled_rectangle(0, tamPixel*i, tamPixel*(TMargemEsquerda - 2), tamPixel*(i+1), terra);
         
         
         /* Desenha o encontro da terra com a água, criando triângulos ou retângulos conforme necessário */
@@ -51,21 +47,21 @@ void outputArray (pixel **array, int altura, int largura, int indice, int player
 #warning arrumar o encontro da terra com a agua na linha mais de baixo
         
         if (tipo(&array[(i+indice+1)%altura][j+2]) == TERRA) {          /* Se a linha de baixo era maior */
-            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
+            al_draw_filled_rectangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), terra);
             j++;
-            al_draw_filled_triangle(size*j, size*i, size*j, size*(i+1), size*(j+1), size*(i+1), terra);
-            al_draw_filled_triangle(size*j, size*i, size*(j+1), size*i, size*(j+1), size*(i+1), agua);
+            al_draw_filled_triangle(tamPixel*j, tamPixel*i, tamPixel*j, tamPixel*(i+1), tamPixel*(j+1), tamPixel*(i+1), terra);
+            al_draw_filled_triangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), agua);
         }
         else if (tipo(&array[(i+indice+1)%altura][j+1]) == TERRA) {     /* Se era igual */
-            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
+            al_draw_filled_rectangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), terra);
             j++;
-            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
+            al_draw_filled_rectangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), agua);
         }
         else {      /* Se era menor */
-            al_draw_filled_triangle(size*j, size*i, size*(j+1), size*i, size*j, size*(i+1), terra);
-            al_draw_filled_triangle(size*(j+1), size*(i+1), size*(j+1), size*i, size*j, size*(i+1), agua);
+            al_draw_filled_triangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*i, tamPixel*j, tamPixel*(i+1), terra);
+            al_draw_filled_triangle(tamPixel*(j+1), tamPixel*(i+1), tamPixel*(j+1), tamPixel*i, tamPixel*j, tamPixel*(i+1), agua);
             j++;
-            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
+            al_draw_filled_rectangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), agua);
         }
         
         
@@ -81,45 +77,45 @@ void outputArray (pixel **array, int altura, int largura, int indice, int player
     
         
         if (ilhaf != 0) {       /* Se existe uma ilha, desenha primeiro as duas partes de água, depois ela em cima */
-            al_draw_filled_rectangle(size*TMargemEsquerda, size*i, size*(ilha0 + 1), size*(i+1), agua);
-            al_draw_filled_rectangle(size*(ilhaf), size*i, size*(largura - TMargemDireita), size*(i+1), agua);
-            al_draw_filled_rounded_rectangle(size*ilha0,size*i,size*(ilhaf+1),size*(i+1),3,3, ilha);
+            al_draw_filled_rectangle(tamPixel*TMargemEsquerda, tamPixel*i, tamPixel*(ilha0 + 1), tamPixel*(i+1), agua);
+            al_draw_filled_rectangle(tamPixel*(ilhaf), tamPixel*i, tamPixel*(largura - TMargemDireita), tamPixel*(i+1), agua);
+            al_draw_filled_rounded_rectangle(tamPixel*ilha0,tamPixel*i,tamPixel*(ilhaf+1),tamPixel*(i+1),3,3, ilha);
         }
         else {                  /* Caso contrário, bastea desenhar uma parte de água */
-            al_draw_filled_rectangle(size*TMargemEsquerda, size*i, size*(largura - TMargemDireita), size*(i+1), agua);
+            al_draw_filled_rectangle(tamPixel*TMargemEsquerda, tamPixel*i, tamPixel*(largura - TMargemDireita), tamPixel*(i+1), agua);
         }
         ilha0 = 999999;         /* Reseta os valores */
         ilhaf = 0;
-#warning limitar a altura e a largura de acordo com o tamanho maximo da janela fornecido pelo allegro. Limita-lo também a multiplos de size.
+#warning limitar a altura e a largura de acordo com o tamanho maximo da janela fornecido pelo allegro. Limita-lo também a multiplos de tamPixel.
         
         
         /* Desenha o segundo encontro da água com a terra */
         if (tipo(&array[(i+indice+1)%altura][j+2]) == AGUA) {
-            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
+            al_draw_filled_rectangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), agua);
             j++;
-            al_draw_filled_triangle(size*j, size*i, size*j, size*(i+1), size*(j+1), size*(i+1), agua);
-            al_draw_filled_triangle(size*j, size*i, size*(j+1), size*i, size*(j+1), size*(i+1), terra);
+            al_draw_filled_triangle(tamPixel*j, tamPixel*i, tamPixel*j, tamPixel*(i+1), tamPixel*(j+1), tamPixel*(i+1), agua);
+            al_draw_filled_triangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), terra);
         }
         else if (tipo(&array[(i+indice+1)%altura][j+1]) == AGUA) {
-            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
+            al_draw_filled_rectangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), agua);
             j++;
-            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
+            al_draw_filled_rectangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), terra);
         }
         else {
-            al_draw_filled_triangle(size*j, size*i, size*(j+1), size*i, size*j, size*(i+1), agua);
-            al_draw_filled_triangle(size*(j+1), size*(i+1), size*(j+1), size*i, size*j, size*(i+1), terra);
+            al_draw_filled_triangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*i, tamPixel*j, tamPixel*(i+1), agua);
+            al_draw_filled_triangle(tamPixel*(j+1), tamPixel*(i+1), tamPixel*(j+1), tamPixel*i, tamPixel*j, tamPixel*(i+1), terra);
             j++;
-            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
+            al_draw_filled_rectangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), terra);
         }
         
         
         /* Desenha a margem direita */
-        al_draw_filled_rectangle(size*(largura - TMargemDireita), size*i, size*(largura), size*(i+1), terra);
+        al_draw_filled_rectangle(tamPixel*(largura - TMargemDireita), tamPixel*i, tamPixel*(largura), tamPixel*(i+1), terra);
         
     }
     
     /* Desenha o jogador na posição correta */
-    al_draw_filled_ellipse(player_x, player_y, playerSize/3, playerSize, canoa);
+    al_draw_filled_ellipse(player_x, player_y, playertamPixel/3, playertamPixel, canoa);
     
     /* Coloca tudo o que foi desenhado na tela */
     al_flip_display();

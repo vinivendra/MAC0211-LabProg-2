@@ -17,7 +17,7 @@
 */
 
 void freeOutput ();
-void outputArray (pixel **array, int altura, int largura, int indice, int player_x, int player_y);
+void outputArray (pixel **array, int altura, int largura, int indice, int player_x, int player_y, int tamPixel);
 
 
 #endif
