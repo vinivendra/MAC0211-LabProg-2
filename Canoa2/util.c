@@ -22,7 +22,7 @@ int getArgs(int argc,char *argv[],float *velocidadeDoBarco, int *larguraDoRio, i
     int read = 0;
     
     while(--argc){ /* Le todos os parâmetros */
-        if (sscanf(argv[argc], "-b%f", velocidadeDoBarco)){ read++; printf("HUE\n");}
+        if (sscanf(argv[argc], "-b%f", velocidadeDoBarco)) read++;
         else if (sscanf(argv[argc], "-l%d", larguraDoRio)) read++;
         else if (sscanf(argv[argc], "-s%d", seed)) read++;
         else if (sscanf(argv[argc], "-f%d", fluxoDesejado)) read++;
@@ -30,9 +30,6 @@ int getArgs(int argc,char *argv[],float *velocidadeDoBarco, int *larguraDoRio, i
         else if (sscanf(argv[argc], "-dI%d", dIlha)) read++;
         else if (sscanf(argv[argc], "-lM%f", limiteMargens)) read++;
         else if (strcmp(argv[argc],"-v") == 0) *verbose = 1;
-        
-        printf("HUEEEEE\n");
-        
     }
     return read;
 }

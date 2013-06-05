@@ -108,27 +108,6 @@ void outputArray (pixel **array, int altura, int largura, int indice) {
         
         al_draw_filled_rectangle(size*(largura - TMargemDireita), size*i, size*(largura), size*(i+1), terra);
         
-        
-        /*for (i = 0; i < altura; i ++) { /* Imprime cada linha, de trás para frente */
-        /*
-         margEsq = margemEsquerda(array[i]);
-         margDir = margemDireita(array[i], largura);
-         for (j = 0; j < largura; j++){
-         
-         if (tipo(&array[(i+indice)%altura][j]) == '#'){*/
-        /*if( j == margDir){
-         al_draw_filled_rounded_rectangle(size*i,size*j,size*(i+1),size*(j+1),0.2,0.2, terra);
-         }
-         else if (j == margEsq){
-         al_draw_filled_rounded_rectangle(size*i,size*j,size*(j+1),size*(i+1),0.2, terra);
-         }
-         else*//*  al_draw_filled_circle(size*j, size*i, size, terra);
-                }
-                else{
-                al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
-                }
-                }
-                }*/
     }
     al_draw_filled_ellipse(largura*5/2, altura*5*0.9, playerSize/3, playerSize, color);
     
