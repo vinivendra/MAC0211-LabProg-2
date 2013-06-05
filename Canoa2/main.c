@@ -12,9 +12,9 @@
 #include "pixel.h"
 
 #define velocidadeDoBarcoInicial 10
-#define larguraDoRioInicial 100
+#define larguraDoRioInicial (480/5)
 #define fluxoDesejadoInicial 50
-#define alturaDaGrade 30
+#define alturaDaGrade (480/5)
 #define distanciaEntreIlhasInicial 10
 #define probabilidadeDeObstaculosInicial 0.5
 #define limiteDasMargens 0.9
@@ -103,7 +103,7 @@ int main (int argc, char *argv[]) {
     
     al_init_primitives_addon();
     
-    display = al_create_display(640, 480);      /* Cria o display */
+    display = al_create_display(larguraDoRio*5, alturaDaGrade*5);      /* Cria o display */
     
     if(!display) {          /* Caso haja erro na criação, imprime e sai. */
         al_show_native_message_box(display, "Error", "Error", "Failed to create display!", NULL, ALLEGRO_MESSAGEBOX_ERROR);

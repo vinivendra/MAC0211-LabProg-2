@@ -23,7 +23,7 @@ void outputArray (pixel **array, int altura, int largura, int indice) {
     
     int i, j;
     
-    int size = (640/largura);
+    int size = (5);
     
     al_clear_to_color(al_map_rgb_f(0, 0, 0));
     
@@ -54,11 +54,29 @@ void outputArray (pixel **array, int altura, int largura, int indice) {
         }
         
         
-        for (j = TMargemEsquerda; j < largura - TMargemDireita - 1; j++) {
+        for (j = TMargemEsquerda; j < largura - TMargemDireita - 2; j++) {
             if (tipo(&array[(i+indice)%altura][j]) == '#')
                 al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
             else
                 al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
+        }
+        
+        if (tipo(&array[(i+indice+1)%altura][j+2]) == '.') {
+            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
+            j++;
+            al_draw_filled_triangle(size*j, size*i, size*j, size*(i+1), size*(j+1), size*(i+1), agua);
+            al_draw_filled_triangle(size*j, size*i, size*(j+1), size*i, size*(j+1), size*(i+1), terra);
+        }
+        else if (tipo(&array[(i+indice+1)%altura][j+1]) == '.') {
+            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
+            j++;
+            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
+        }
+        else {
+            al_draw_filled_triangle(size*j, size*i, size*(j+1), size*i, size*j, size*(i+1), agua);
+            al_draw_filled_triangle(size*(j+1), size*(i+1), size*(j+1), size*i, size*j, size*(i+1), terra);
+            j++;
+            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
         }
         
         for (j = largura - TMargemDireita; j < largura; j++)
