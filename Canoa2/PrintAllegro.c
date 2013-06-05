@@ -16,8 +16,6 @@ typedef int BOOL;
 #define TERRA '#'
 #define AGUA '.'
 
-#define playerSize 30
-
 /*
  Implementação
  */
@@ -33,6 +31,8 @@ void outputArray (pixel **array, int altura, int largura, int indice, int player
     
     
     int size = (5);
+    int playerSize = size + largura*0.1;
+    if(playerSize > 30) playerSize = 30;
     
     al_clear_to_color(al_map_rgb_f(0, 0, 0));
     
