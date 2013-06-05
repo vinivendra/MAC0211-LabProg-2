@@ -9,7 +9,7 @@
  */
 
 /*Faz a leitura dos parâmetros e permite a usuário corrigir alguma entrada incorreta*/
-int getArgs(int argc,char *argv[],float *velocidadeDoBarco, int *larguraDoRio, int *seed, int *fluxoDesejado, int *verbose, int *dIlha, float *pIlha, float *limiteMargens) {
+int getArgs(int argc,char *argv[],float *velocidadeDoBarco, int *larguraDoRio, int *seed, int *fluxoDesejado, int *verbose, int *dIlha, float *pIlha, float *limiteMargens, int *size) {
     int read = 0;
     
     while(--argc){ /* Le todos os parâmetros */
@@ -20,12 +20,13 @@ int getArgs(int argc,char *argv[],float *velocidadeDoBarco, int *larguraDoRio, i
         else if (sscanf(argv[argc], "-pI%f", pIlha)) read++;
         else if (sscanf(argv[argc], "-dI%d", dIlha)) read++;
         else if (sscanf(argv[argc], "-lM%f", limiteMargens)) read++;
+	else if (sscanf(argv[argc], "-D%d", size)) read++;
         else if (strcmp(argv[argc],"-v") == 0) *verbose = 1;
     }
     return read;
 }
 
-void corrigeArgs (int argc,char *argv[],float *velocidadeDoBarco, int *larguraDoRio, int *seed, int *fluxoDesejado, int *verbose, int *dIlha, float *pIlha, float *limiteMargens) {
+void corrigeArgs (int argc,char *argv[],float *velocidadeDoBarco, int *larguraDoRio, int *seed, int *fluxoDesejado, int *verbose, int *dIlha, float *pIlha, float *limiteMargens, int *size) {
     /* Corrige os argumentos passados pelo usuário para atenderem os padrões necessários para o bom funcionamento do programa */
     
     if (*larguraDoRio < 12) {
@@ -83,5 +84,7 @@ void corrigeArgs (int argc,char *argv[],float *velocidadeDoBarco, int *larguraDo
                "Pressione Enter para continuar...\n");
         getchar();
     }
-    
+
+    else if(*size < 3)
+      *size = 3;
 }
