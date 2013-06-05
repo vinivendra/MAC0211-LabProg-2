@@ -44,7 +44,6 @@ void outputArray (pixel **array, int altura, int largura, int indice, int player
         /* Desenha o encontro da terra com a água, criando triângulos ou retângulos conforme necessário */
         j = TMargemEsquerda - 2;
         
-#warning arrumar o encontro da terra com a agua na linha mais de baixo
         
         if (tipo(&array[(i+indice+1)%altura][j+2]) == TERRA) {          /* Se a linha de baixo era maior */
             al_draw_filled_rectangle(tamPixel*j, tamPixel*i, tamPixel*(j+1), tamPixel*(i+1), terra);
@@ -86,7 +85,6 @@ void outputArray (pixel **array, int altura, int largura, int indice, int player
         }
         ilha0 = 999999;         /* Reseta os valores */
         ilhaf = 0;
-#warning limitar a altura e a largura de acordo com o tamanho maximo da janela fornecido pelo allegro. Limita-lo também a multiplos de tamPixel.
         
         
         /* Desenha o segundo encontro da água com a terra */
