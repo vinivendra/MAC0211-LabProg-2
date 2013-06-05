@@ -11,6 +11,11 @@
 #include "util.h"
 #include "pixel.h"
 
+/*
+ Defines de valores iniciais
+*/
+#pragma mark Defines
+
 #define velocidadeDoBarcoInicial 10
 #define larguraDoRioInicial (480/5)
 #define fluxoDesejadoInicial 50
@@ -18,16 +23,35 @@
 #define distanciaEntreIlhasInicial 10
 #define probabilidadeDeObstaculosInicial 0.5
 #define limiteDasMargens 0.9
+#define tamanhoInicial 5
+
+/*
+ BOOL
+*/
 
 #define YES 1
 #define NO 0
 typedef int BOOL;
 
+/*
+ Teclas das setas
+*/
+
 enum KEYS {
     KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 };
 
+/*
+ Protótipos
+*/
+#pragma mark Protótipos
+
 void freeOutput(ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_TIMER *timer);
+
+/*
+ main
+*/
+#pragma mark main
 
 int main (int argc, char *argv[]) {
     
@@ -41,29 +65,31 @@ int main (int argc, char *argv[]) {
     int dIlha = distanciaEntreIlhasInicial;
     float pIlha = probabilidadeDeObstaculosInicial;
     float limiteMargens = limiteDasMargens;
+    int tamPixel = tamanhoInicial;
     
-    int size = 5;
+    bool doexit = NO;       /* Para saber quando sair do programa */
     
-    bool doexit = NO;
+    bool key[4] = {NO, NO, NO, NO};     /* Vetor que guarda se cada tecla está apertada */
     
-    bool key[4] = {NO, NO, NO, NO};
-    
-    int player_x = larguraDoRio*size/2, player_y = alturaDaGrade*size - 40;
+    int player_x = larguraDoRio*tamPixel/2; /* Posiçao da canoa */
+    int player_y = alturaDaGrade*tamPixel - 40;
         
-    int seed = 1;
-    int verbose = 0;
-    int indice = 0;
-    pixel **grade;
+    int seed = 1;           /* seed pro random */
+    int verbose = 0;        /* flag do modo verbose */
+    int indice = 0;         /* usado para imprimir a grade */
+    pixel **grade;          /* A grade em que se guarda as informacoes sobre o rio */
     
     ALLEGRO_DISPLAY *display = NULL;    /* Display, ou seja, a janela criada pelo allegro */
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;    /* A event queue, usada para manejar eventos */
-    ALLEGRO_TIMER *timer = NULL; /* O timer do programa */
+    ALLEGRO_TIMER *timer = NULL;        /* O timer do programa */
     
     /*
      Leitura de parametros
      */
     
+    /* Pega os argumentos passados para o programa */
     getArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens);
+    /* Corrige os argumentos para que estejam dentro de limites */
     corrigeArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens);
     
     if (verbose) {
@@ -93,12 +119,14 @@ int main (int argc, char *argv[]) {
      Criação do primeiro frame
      */
     
+    /* Inicializacao da grade */
     grade = initGrade(alturaDaGrade, larguraDoRio);
     
+    /* Criação do primeiro frame */
     criaPrimeiroFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, dIlha, pIlha);
     
     /*
-     Allegro initialization
+     Inicialização do allegro
      */
     
     if(!al_init()) {        /* Inicializa o allegro. Se falhar, imprime o erro e sai. */
@@ -108,28 +136,27 @@ int main (int argc, char *argv[]) {
     
     al_init_primitives_addon();
     
-    display = al_create_display(larguraDoRio*size, alturaDaGrade*size);      /* Cria o display */
-    
-    if(!display) {          /* Caso haja erro na criação, imprime e sai. */
+    display = al_create_display(larguraDoRio*tamPixel, alturaDaGrade*tamPixel);      /* Cria o display */
+    if(!display) {          /* Erros na criação do display */
         al_show_native_message_box(display, "Error", "Error", "Failed to create display!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         exit(-1);
     }
     
     event_queue = al_create_event_queue();
-    if(!event_queue) {
+    if(!event_queue) {      /* Erros na criação fila de eventos */
         al_show_native_message_box(display, "Error", "Error", "Failed to create event queue!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         freeOutput(display, event_queue, timer);
         exit(-1);
     }
     
     timer = al_create_timer(1.0/velocidadeDoBarco);
-    if(!timer) {
+    if(!timer) {            /* Erros na criação do timer */
         al_show_native_message_box(display, "Error", "Error", "Failed to create timer!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         freeOutput(display, event_queue, timer);
         exit(-1);
     }
     
-    if(!al_install_keyboard()) {
+    if(!al_install_keyboard()) {    /* Erros na inicialização dos controles de teclado */
         al_show_native_message_box(display, "Error", "Error", "Failed to initialize keyboard!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         freeOutput(display, event_queue, timer);
         exit(-1);
@@ -144,42 +171,16 @@ int main (int argc, char *argv[]) {
      Frames subsequentes
      */
     
-    al_start_timer(timer);
-    
-    outputArray(grade, alturaDaGrade, larguraDoRio, indice, player_x, player_y);
-    
+    al_start_timer(timer);      /* Faz o timer começar a funcionar */
+        
     while (!doexit) {
-        ALLEGRO_EVENT ev;
-        al_wait_for_event(event_queue, &ev);    /* Tells allegro to wait until an event comes from the queue "event_queue". */
+        ALLEGRO_EVENT ev;       /* Variável para guardar qualquer evento que aconteça */
+        al_wait_for_event(event_queue, &ev);    /* Faz o allegro esperar até que exista um evento na fila */
         
-        if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+        if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)     /* Caso o usuário aperte o botão 'x', saímos do programa */
             doexit = YES;
-        }
         
-        else if (ev.type == ALLEGRO_EVENT_TIMER && al_is_event_queue_empty(event_queue)) {   /* If the event was the timer reaching the instant for another loop */
-            
-            if(key[KEY_UP] && player_y > 30) {
-                player_y -= size;
-            }
-            if(key[KEY_DOWN] && player_y < alturaDaGrade*size-30) {
-                player_y += size;
-            }
-            if(key[KEY_LEFT] && player_x > 10) {
-                player_x -= size;
-            }
-            if(key[KEY_RIGHT] && player_x < larguraDoRio*size - 10) {
-                player_x += size;
-            }
-            
-            indice = (indice - 1+alturaDaGrade) % alturaDaGrade;
-            
-            criaProximoFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, indice, dIlha, pIlha);
-            
-            outputArray(grade, alturaDaGrade, larguraDoRio, indice, player_x, player_y);
-            
-        }
-        
-        else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+        else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {    /* Se uma tecla foi apertada, guardamos isso no vetor */
             switch(ev.keyboard.keycode) {
                 case ALLEGRO_KEY_UP:
                     key[KEY_UP] = YES;
@@ -195,7 +196,7 @@ int main (int argc, char *argv[]) {
                     break;
             }
         }
-        else if(ev.type == ALLEGRO_EVENT_KEY_UP) {
+        else if(ev.type == ALLEGRO_EVENT_KEY_UP) {      /* Se uma tecla foi solta, registramos isso também */
             switch(ev.keyboard.keycode) {
                 case ALLEGRO_KEY_UP:
                     key[KEY_UP] = NO;
@@ -209,36 +210,59 @@ int main (int argc, char *argv[]) {
                 case ALLEGRO_KEY_RIGHT:
                     key[KEY_RIGHT] = NO;
                     break;
-                case ALLEGRO_KEY_ESCAPE:
+                case ALLEGRO_KEY_ESCAPE:                /* Permitimos que o usuário aperte ESC para sair */
                     doexit = YES;
                     break;
             }
         }
-        /* According to the wiki, we only want to redraw the frame if the event queue is completely empty.
-         "Otherwise, the update loop could fall very far behind". */
         
+        else if (ev.type == ALLEGRO_EVENT_TIMER && al_is_event_queue_empty(event_queue)) {  /* Se o timer já chegou no próximo frame */
+            if(key[KEY_UP] && player_y > 30) {      /* Se o usuário está apertando alguma tecla, faz a canoa se mexer */
+                player_y -= tamPixel;
+            }
+            if(key[KEY_DOWN] && player_y < alturaDaGrade*tamPixel-30) {
+                player_y += tamPixel;
+            }
+            if(key[KEY_LEFT] && player_x > 10) {
+                player_x -= tamPixel;
+            }
+            if(key[KEY_RIGHT] && player_x < larguraDoRio*tamPixel - 10) {
+                player_x += tamPixel;
+            }
+            
+            indice = (indice - 1+alturaDaGrade) % alturaDaGrade;    /* Move a grade uma linha para cima */
+            
+            /* Popula a grade com as informações do próximo frame */
+            criaProximoFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, indice, dIlha, pIlha);
+            
+            /* Imprime a grade na tela */
+            outputArray(grade, alturaDaGrade, larguraDoRio, indice, player_x, player_y);
+            
+        }
+
     }
     
     /*
      Frees
      */
     
-    freeOutput(display, event_queue, timer);
+    freeOutput(display, event_queue, timer);        /* Dá free em qualquer coisa que o allegro tenha allocado */
     
-    freeGrade(grade, alturaDaGrade, larguraDoRio);
+    freeGrade(grade, alturaDaGrade, larguraDoRio);  /* Dá free na matriz da grade */
     
     return 0;
 }
 
 
+#pragma mark Funções auxiliares
 
-void freeOutput(ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_TIMER *timer) {
+void freeOutput(ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_TIMER *timer) { /* Dá free em qualquer coisa que o allegro tenha allocado */
     if (display != NULL)
         al_destroy_display(display);            /* Dá free no display */
     if (event_queue != NULL)
         al_destroy_event_queue(event_queue);    /* Dá free na event queue */
     if (timer != NULL) {
-        al_destroy_timer(timer);
+        al_destroy_timer(timer);                /* Dá free no timer */
     }
 }
 
