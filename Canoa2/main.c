@@ -87,45 +87,42 @@ int main (int argc, char *argv[]) {
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;    /* A event queue, usada para manejar eventos */
     ALLEGRO_TIMER *timer = NULL;        /* O timer do programa */
     
-    /*
-     Leitura de parametros
-     */
+  getArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens, &tamPixel);
+  corrigeArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens, &tamPixel);
+  
+  if(boatSize > 30) boatSize = 30;
+  if(velU > 5) velU = 5;
+  if(velD > 7) velD = 9;
     
-    /* Pega os argumentos passados para o programa */
-    getArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens);
-    /* Corrige os argumentos para que estejam dentro de limites */
-    corrigeArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens);
+  if (verbose) {
+    printf ("\t \t Opcoes disponiveis: \n"
+	    "-b = %f  - Velocidade do barco\n"
+	    "-l = %d  - Largura do Rio\n"
+	    "-s = %d  - Semente para o gerador aleatorio\n"
+	    "-f = %d  - Fluxo da agua\n"
+	    "-v = %d  - Verbose\n"
+	    "-pI = %f - Probabilidade de haver obstaculos\n"
+	    "-dI = %d - Distancia minima entre obstaculos\n"
+	    "-lM = %f - Limite de tamanho das margens (de 0 a 1)\n"
+	    "-D = %d - Tamanho de cada pixel\n"
+	    "Pressione Enter para continuar...\n", velocidadeDoBarco, larguraDoRio, seed, fluxoDesejado, verbose, pIlha, dIlha, limiteMargens, tamPixel);
+    getchar();
+  }
     
-    if(boatSize > 30) boatSize = 30;
-    if(velU > 5) velU = 5;
-    if(velD > 7) velD = 9;
+  /*
+    Seed
+  */
     
-    if (verbose) {
-        printf ("\t \t Opcoes disponiveis: \n"
-                "-b = %f  - Velocidade do barco\n"
-                "-l = %d  - Largura do Rio\n"
-                "-s = %d  - Semente para o gerador aleatorio\n"
-                "-f = %d  - Fluxo da agua\n"
-                "-v = %d  - Verbose\n"
-                "-pI = %f - Probabilidade de haver obstaculos\n"
-                "-dI = %d - Distancia minima entre obstaculos\n"
-                "-lM = %f - Limite de tamanho das margens (de 0 a 1)\n"
-                "Pressione Enter para continuar...\n", velocidadeDoBarco, larguraDoRio, seed, fluxoDesejado, verbose, pIlha, dIlha, limiteMargens);
-        getchar();
-    }
+  if (seed == 0)
+    seed = (int)time(NULL);
     
-    /*
-     Seed
-     */
+  srand(seed);
     
-    if (seed == 0)
-        seed = (int)time(NULL);
+  /*
+    Criação do primeiro frame
+  */
     
-    srand(seed);
-    
-    /*
-     Criação do primeiro frame
-     */
+
     
     /* Inicializacao da grade */
     grade = initGrade(alturaDaGrade, larguraDoRio);
