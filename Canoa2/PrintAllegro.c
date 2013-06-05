@@ -22,7 +22,7 @@ typedef int BOOL;
  Implementação
  */
 
-void outputArray (pixel **array, int altura, int largura, int indice) {
+void outputArray (pixel **array, int altura, int largura, int indice, int player_x, int player_y) {
     ALLEGRO_COLOR terra = al_map_rgb(110, 60, 40);
     ALLEGRO_COLOR agua = al_map_rgb(51, 153, 255);
     ALLEGRO_COLOR ilha = al_map_rgb(6, 96, 0);
@@ -109,7 +109,7 @@ void outputArray (pixel **array, int altura, int largura, int indice) {
         al_draw_filled_rectangle(size*(largura - TMargemDireita), size*i, size*(largura), size*(i+1), terra);
         
     }
-    al_draw_filled_ellipse(largura*5/2, altura*5*0.9, playerSize/3, playerSize, color);
+    al_draw_filled_ellipse(player_x, player_y, playerSize/3, playerSize, color);
     
     al_flip_display();
 }
