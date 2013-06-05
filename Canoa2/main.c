@@ -32,11 +32,14 @@
 #define YES 1
 #define NO 0
 typedef int BOOL;
+
+/*
+ Variáveis do allegro
+ */
+
 ALLEGRO_DISPLAY *display = NULL;    /* Display, ou seja, a janela criada pelo allegro */
 ALLEGRO_EVENT_QUEUE *event_queue = NULL;    /* A event queue, usada para manejar eventos */
 ALLEGRO_TIMER *timer = NULL; /* O timer do programa */
-
-
 
 /*
  Teclas das setas
@@ -52,9 +55,7 @@ enum KEYS {
 #pragma mark Protótipos
 
 void freeOutput(ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_TIMER *timer);
-BOOL STinitAllegro (int , int, float);
-
-/*Variáveis Allegro*/
+BOOL STinitAllegro (int larguraDoRio, int size, float velocidadeDoBarco);
 
 /*
  main
@@ -91,46 +92,42 @@ int main (int argc, char *argv[]) {
     int indice = 0;         /* usado para imprimir a grade */
     pixel **grade;          /* A grade em que se guarda as informacoes sobre o rio */
     
-    ALLEGRO_DISPLAY *display = NULL;    /* Display, ou seja, a janela criada pelo allegro */
-    ALLEGRO_EVENT_QUEUE *event_queue = NULL;    /* A event queue, usada para manejar eventos */
-    ALLEGRO_TIMER *timer = NULL;        /* O timer do programa */
+    getArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens, &tamPixel);
+    corrigeArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens, &tamPixel);
     
-  getArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens, &tamPixel);
-  corrigeArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens, &tamPixel);
-  
-  if(boatSize > 30) boatSize = 30;
-  if(velU > 5) velU = 5;
-  if(velD > 7) velD = 9;
+    if(boatSize > 30) boatSize = 30;
+    if(velU > 5) velU = 5;
+    if(velD > 7) velD = 9;
     
-  if (verbose) {
-    printf ("\t \t Opcoes disponiveis: \n"
-	    "-b = %f  - Velocidade do barco\n"
-	    "-l = %d  - Largura do Rio\n"
-	    "-s = %d  - Semente para o gerador aleatorio\n"
-	    "-f = %d  - Fluxo da agua\n"
-	    "-v = %d  - Verbose\n"
-	    "-pI = %f - Probabilidade de haver obstaculos\n"
-	    "-dI = %d - Distancia minima entre obstaculos\n"
-	    "-lM = %f - Limite de tamanho das margens (de 0 a 1)\n"
-	    "-D = %d - Tamanho de cada pixel\n"
-	    "Pressione Enter para continuar...\n", velocidadeDoBarco, larguraDoRio, seed, fluxoDesejado, verbose, pIlha, dIlha, limiteMargens, tamPixel);
-    getchar();
-  }
+    if (verbose) {
+        printf ("\t \t Opcoes disponiveis: \n"
+                "-b = %f  - Velocidade do barco\n"
+                "-l = %d  - Largura do Rio\n"
+                "-s = %d  - Semente para o gerador aleatorio\n"
+                "-f = %d  - Fluxo da agua\n"
+                "-v = %d  - Verbose\n"
+                "-pI = %f - Probabilidade de haver obstaculos\n"
+                "-dI = %d - Distancia minima entre obstaculos\n"
+                "-lM = %f - Limite de tamanho das margens (de 0 a 1)\n"
+                "-D = %d - Tamanho de cada pixel\n"
+                "Pressione Enter para continuar...\n", velocidadeDoBarco, larguraDoRio, seed, fluxoDesejado, verbose, pIlha, dIlha, limiteMargens, tamPixel);
+        getchar();
+    }
     
-  /*
-    Seed
-  */
+    /*
+     Seed
+     */
     
-  if (seed == 0)
-    seed = (int)time(NULL);
+    if (seed == 0)
+        seed = (int)time(NULL);
     
-  srand(seed);
+    srand(seed);
     
-  /*
-    Criação do primeiro frame
-  */
+    /*
+     Criação do primeiro frame
+     */
     
-
+    
     
     /* Inicializacao da grade */
     grade = initGrade(alturaDaGrade, larguraDoRio);
@@ -138,52 +135,18 @@ int main (int argc, char *argv[]) {
     /* Criação do primeiro frame */
     criaPrimeiroFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, dIlha, pIlha);
     
-    /*
-     Inicialização do allegro
-     */
-    
-    if(!al_init()) {        /* Inicializa o allegro. Se falhar, imprime o erro e sai. */
-        al_show_native_message_box(display, "Error", "Error", "Failed to initialize allegro!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        exit(-1);
+    if (!STinitAllegro(larguraDoRio, tamPixel, velocidadeDoBarco)){
+        exit (-1);
     }
     
-    al_init_primitives_addon();
-    
-    display = al_create_display(larguraDoRio*tamPixel, alturaDaGrade*tamPixel);      /* Cria o display */
-    if(!display) {          /* Erros na criação do display */
-        al_show_native_message_box(display, "Error", "Error", "Failed to create display!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        exit(-1);
-    }
-    
-    event_queue = al_create_event_queue();
-    if(!event_queue) {      /* Erros na criação fila de eventos */
-        al_show_native_message_box(display, "Error", "Error", "Failed to create event queue!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        freeOutput(display, event_queue, timer);
-        exit(-1);
-    }
-    
-    timer = al_create_timer(1.0/velocidadeDoBarco);
-    if(!timer) {            /* Erros na criação do timer */
-        al_show_native_message_box(display, "Error", "Error", "Failed to create timer!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        freeOutput(display, event_queue, timer);
-        exit(-1);
-    }
-    
-    if(!al_install_keyboard()) {    /* Erros na inicialização dos controles de teclado */
-        al_show_native_message_box(display, "Error", "Error", "Failed to initialize keyboard!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        freeOutput(display, event_queue, timer);
-        exit(-1);
-    }
     
     /* Registrar quaisquer fontes de eventos */
-    al_register_event_source(event_queue, al_get_display_event_source(display));
-    al_register_event_source(event_queue, al_get_timer_event_source(timer));
-    al_register_event_source(event_queue, al_get_keyboard_event_source());
+    
     
     /*
      Frames subsequentes
      */
-
+    
     
     al_start_timer(timer);
     
@@ -248,7 +211,7 @@ int main (int argc, char *argv[]) {
             }
             
             indice = (indice - 1+alturaDaGrade) % alturaDaGrade;    /* Move a grade uma linha para cima */
-
+            
             /* Popula a grade com as informações do próximo frame */
             criaProximoFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, indice, dIlha, pIlha);
             
@@ -275,46 +238,46 @@ int main (int argc, char *argv[]) {
 
 
 BOOL STinitAllegro (int larguraDoRio, int size, float velocidadeDoBarco){
-      
-      if(!al_init()){        /* Inicializa o allegro. Se falhar, imprime o erro e sai. */
+    
+    if(!al_init()){        /* Inicializa o allegro. Se falhar, imprime o erro e sai. */
         al_show_native_message_box(display, "Error", "Error", "Failed to initialize allegro!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return NO;
-      }
-        
-      al_init_primitives_addon();
-        
-      display = al_create_display(larguraDoRio*size, (alturaDaGrade-1)*size);      /* Cria o display */
-        
-      if(!display) {          /* Caso haja erro na criação, imprime e sai. */
+    }
+    
+    al_init_primitives_addon();
+    
+    display = al_create_display(larguraDoRio*size, (alturaDaGrade-1)*size);      /* Cria o display */
+    
+    if(!display) {          /* Caso haja erro na criação, imprime e sai. */
         al_show_native_message_box(display, "Error", "Error", "Failed to create display!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return NO;
-      }
-        
-      event_queue = al_create_event_queue();
-      if(!event_queue) {
+    }
+    
+    event_queue = al_create_event_queue();
+    if(!event_queue) {
         al_show_native_message_box(display, "Error", "Error", "Failed to create event queue!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         freeOutput(display, event_queue, timer);
         return NO;
-      }
-        
-      timer = al_create_timer(1.0/velocidadeDoBarco);
-      if(!timer) {
+    }
+    
+    timer = al_create_timer(1.0/velocidadeDoBarco);
+    if(!timer) {
         al_show_native_message_box(display, "Error", "Error", "Failed to create timer!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         freeOutput(display, event_queue, timer);
         return NO;
-      }
-        
-      if(!al_install_keyboard()) {
+    }
+    
+    if(!al_install_keyboard()) {
         al_show_native_message_box(display, "Error", "Error", "Failed to initialize keyboard!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         freeOutput(display, event_queue, timer);
         return NO;
-      }
-      
-      al_register_event_source(event_queue, al_get_display_event_source(display));
-      al_register_event_source(event_queue, al_get_timer_event_source(timer));
-      al_register_event_source(event_queue, al_get_keyboard_event_source());
-      
-      return YES;
+    }
+    
+    al_register_event_source(event_queue, al_get_display_event_source(display));
+    al_register_event_source(event_queue, al_get_timer_event_source(timer));
+    al_register_event_source(event_queue, al_get_keyboard_event_source());
+    
+    return YES;
 }
 
 void freeOutput(ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_TIMER *timer) { /* Dá free em qualquer coisa que o allegro tenha allocado */
