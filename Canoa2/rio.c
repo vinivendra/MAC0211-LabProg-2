@@ -114,10 +114,10 @@ void aleatorizaPrimeiraMargem (pixel *linha, int largura, float limiteMargens) {
     int tamanhoDaMargemEsquerda = (limiteMargens*largura - 1)*rand()/RAND_MAX + 1;
     int tamanhoDaMargemDireita = (limiteMargens*largura - 1)*rand()/RAND_MAX + 1;
     
-    if (tamanhoDaMargemEsquerda <= 0) tamanhoDaMargemEsquerda = 1;  /* Evita que as novas margens sejam 0 ou passem do limite */
+    if (tamanhoDaMargemEsquerda <= 1) tamanhoDaMargemEsquerda = 2;  /* Evita que as novas margens sejam 0 ou passem do limite */
     else if (tamanhoDaMargemEsquerda > limiteMargens * largura || tamanhoDaMargemEsquerda >= largura - tamanhoDaMargemDireita - 10) tamanhoDaMargemEsquerda = (largura - 10)/2;
     
-    if (tamanhoDaMargemDireita <= 0) tamanhoDaMargemDireita = 1;
+    if (tamanhoDaMargemDireita <= 1) tamanhoDaMargemDireita = 2;
     else if (tamanhoDaMargemDireita > limiteMargens * largura || tamanhoDaMargemDireita >= largura - tamanhoDaMargemEsquerda - 10) tamanhoDaMargemDireita = (largura - 10)/2;
     
     for (i = 0; i < tamanhoDaMargemEsquerda; i++){  /* Insere nova margem esquerda */
@@ -234,10 +234,10 @@ void aleatorizaMargem(pixel *linhaAnterior, pixel *linha, float limiteMargens, i
     tamanhoDaMargemEsquerda = tamanhoDaMargemEsquerda + variacaoEsquerda;
     tamanhoDaMargemDireita = tamanhoDaMargemDireita + variacaoDireita;
     
-    if (tamanhoDaMargemEsquerda <= 0) tamanhoDaMargemEsquerda = 1;  /* Evita que as novas margens sejam 0 ou passem do limite */
+    if (tamanhoDaMargemEsquerda <= 1) tamanhoDaMargemEsquerda = 2;  /* Evita que as novas margens sejam 0 ou passem do limite */
     else if (tamanhoDaMargemEsquerda > limiteMargens * largura || tamanhoDaMargemEsquerda >= largura - tamanhoDaMargemDireita - 10) tamanhoDaMargemEsquerda = margemEsquerda(linhaAnterior);
     
-    if (tamanhoDaMargemDireita <= 0) tamanhoDaMargemDireita = 1;
+    if (tamanhoDaMargemDireita <= 1) tamanhoDaMargemDireita = 2;
     else if (tamanhoDaMargemDireita > limiteMargens * largura || tamanhoDaMargemDireita >= largura - tamanhoDaMargemEsquerda - 10) tamanhoDaMargemDireita = margemDireita(linhaAnterior, largura);
     
     for (i = 0; i < tamanhoDaMargemEsquerda; i++){  /* Insere nova margem esquerda */
