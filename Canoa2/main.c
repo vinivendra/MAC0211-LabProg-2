@@ -19,18 +19,41 @@
 #define probabilidadeDeObstaculosInicial 0.3
 #define limiteDasMargens 0.25
 
+/*
+ Defines de valores iniciais
+*/
+#pragma mark Defines
+
+/*
+ BOOL
+*/
+
+
 #define YES 1
 #define NO 0
 typedef int BOOL;
+
+/*
+ Teclas das setas
+*/
 
 enum KEYS {
   KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 };
 
+/*
+ Protótipos
+*/
+#pragma mark Protótipos
+
 void freeOutput(ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_TIMER *timer);
 
-int main (int argc, char *argv[]) {
-    
+/*
+ main
+*/
+#pragma mark main
+
+int main (int argc, char *argv[]) {    
   /*
     Declaração de variáveis
   */
@@ -143,6 +166,7 @@ int main (int argc, char *argv[]) {
     freeOutput(display, event_queue, timer);
     exit(-1);
   }
+
     
   /* Registrar quaisquer fontes de eventos */
   al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -152,10 +176,10 @@ int main (int argc, char *argv[]) {
   /*
     Frames subsequentes
   */
-    
+
   al_start_timer(timer);
     
-  outputArray(grade, alturaDaGrade, larguraDoRio, indice, player_x, player_y);
+  outputArray(grade, alturaDaGrade, larguraDoRio, indice, player_x, player_y, size);
     
   while (!doexit) {
     ALLEGRO_EVENT ev;
@@ -184,7 +208,7 @@ int main (int argc, char *argv[]) {
             
       criaProximoFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, indice, dIlha, pIlha);
             
-      outputArray(grade, alturaDaGrade, larguraDoRio, indice, player_x, player_y);
+      outputArray(grade, alturaDaGrade, larguraDoRio, indice, player_x, player_y, size);
             
     }
         
@@ -223,32 +247,26 @@ int main (int argc, char *argv[]) {
 	break;
       }
     }
-    /* According to the wiki, we only want to redraw the frame if the event queue is completely empty.
-       "Otherwise, the update loop could fall very far behind". */
-        
   }
+
+    freeOutput(display, event_queue, timer);        /* Dá free em qualquer coisa que o allegro tenha allocado */
     
-  /*
-    Frees
-  */
+    freeGrade(grade, alturaDaGrade, larguraDoRio);  /* Dá free na matriz da grade */
     
-  freeOutput(display, event_queue, timer);
-    
-  freeGrade(grade, alturaDaGrade, larguraDoRio);
-    
-  return 0;
+    return 0;
 }
 
+#pragma mark Funções auxiliares
 
+void freeOutput(ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_TIMER *timer) { /* Dá free em qualquer coisa que o allegro tenha allocado */
+    if (display != NULL)
+        al_destroy_display(display);            /* Dá free no display */
+    if (event_queue != NULL)
+        al_destroy_event_queue(event_queue);    /* Dá free na event queue */
+    if (timer != NULL) {
+        al_destroy_timer(timer);                /* Dá free no timer */
+    }
 
-void freeOutput(ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_TIMER *timer) {
-  if (display != NULL)
-    al_destroy_display(display);            /* Dá free no display */
-  if (event_queue != NULL)
-    al_destroy_event_queue(event_queue);    /* Dá free na event queue */
-  if (timer != NULL) {
-    al_destroy_timer(timer);
-  }
 }
 
 
