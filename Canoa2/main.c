@@ -89,9 +89,7 @@ int main (int argc, char *argv[]) {
     grade = initGrade(alturaDaGrade, larguraDoRio);
     
     criaPrimeiroFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, dIlha, pIlha);
-            
-    clearScreen();
-    
+                
     /*
      Allegro initialization
     */
@@ -149,7 +147,7 @@ int main (int argc, char *argv[]) {
             indice = (indice - 1+alturaDaGrade) % alturaDaGrade;
             
             criaProximoFrame(grade, alturaDaGrade, larguraDoRio, limiteMargens, fluxoDesejado, indice, dIlha, pIlha);
-            
+                        
             outputArray(grade, alturaDaGrade, larguraDoRio, indice);
             
         }

@@ -13,6 +13,11 @@
 #define NO 0
 typedef int BOOL;
 
+#define TERRA '#'
+#define AGUA '.'
+
+#define playerSize 30
+
 /*
  Implementação
  */
@@ -20,6 +25,7 @@ typedef int BOOL;
 void outputArray (pixel **array, int altura, int largura, int indice) {
     ALLEGRO_COLOR terra = al_map_rgb(110, 60, 40);
     ALLEGRO_COLOR agua = al_map_rgb(35, 200, 240);
+    ALLEGRO_COLOR color = al_map_rgb(180, 1, 2);
     
     int i, j;
     
@@ -35,13 +41,13 @@ void outputArray (pixel **array, int altura, int largura, int indice) {
         for (j = 0; j < TMargemEsquerda - 2; j++)
             al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
                 
-        if (tipo(&array[(i+indice+1)%altura][j+2]) == '#') {
+        if (tipo(&array[(i+indice+1)%altura][j+2]) == TERRA) {
             al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
             j++;
             al_draw_filled_triangle(size*j, size*i, size*j, size*(i+1), size*(j+1), size*(i+1), terra);
             al_draw_filled_triangle(size*j, size*i, size*(j+1), size*i, size*(j+1), size*(i+1), agua);
         }
-        else if (tipo(&array[(i+indice+1)%altura][j+1]) == '#') {
+        else if (tipo(&array[(i+indice+1)%altura][j+1]) == TERRA) {
             al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
             j++;
             al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
@@ -55,19 +61,19 @@ void outputArray (pixel **array, int altura, int largura, int indice) {
         
         
         for (j = TMargemEsquerda; j < largura - TMargemDireita - 2; j++) {
-            if (tipo(&array[(i+indice)%altura][j]) == '#')
+            if (tipo(&array[(i+indice)%altura][j]) == TERRA)
                 al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
             else
                 al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
         }
         
-        if (tipo(&array[(i+indice+1)%altura][j+2]) == '.') {
+        if (tipo(&array[(i+indice+1)%altura][j+2]) == AGUA) {
             al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
             j++;
             al_draw_filled_triangle(size*j, size*i, size*j, size*(i+1), size*(j+1), size*(i+1), agua);
             al_draw_filled_triangle(size*j, size*i, size*(j+1), size*i, size*(j+1), size*(i+1), terra);
         }
-        else if (tipo(&array[(i+indice+1)%altura][j+1]) == '.') {
+        else if (tipo(&array[(i+indice+1)%altura][j+1]) == AGUA) {
             al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
             j++;
             al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
@@ -81,20 +87,9 @@ void outputArray (pixel **array, int altura, int largura, int indice) {
         
         for (j = largura - TMargemDireita; j < largura; j++)
             al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
-        
-        for (j = 0; j < largura; j++) {
-            printf("%c", tipo(&array[(i+indice)%altura][j]));
-        }
-        printf("\n");
-        
     }
+        
+    al_draw_filled_ellipse(largura*5/2, altura*5*0.9, playerSize/3, playerSize, color);
     
-    printf("\n");
     al_flip_display();
-}
-
-
-
-void clearScreen () {
-    
 }
