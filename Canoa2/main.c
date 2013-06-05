@@ -91,8 +91,8 @@ int main (int argc, char *argv[]) {
     Leitura de parametros
   */
     
-  getArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens);
-  corrigeArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens);
+  getArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens, &size);
+  corrigeArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens, &size);
   
   if(boatSize > 30) boatSize = 30;
   if(velU > 5) velU = 5;
@@ -108,7 +108,8 @@ int main (int argc, char *argv[]) {
 	    "-pI = %f - Probabilidade de haver obstaculos\n"
 	    "-dI = %d - Distancia minima entre obstaculos\n"
 	    "-lM = %f - Limite de tamanho das margens (de 0 a 1)\n"
-	    "Pressione Enter para continuar...\n", velocidadeDoBarco, larguraDoRio, seed, fluxoDesejado, verbose, pIlha, dIlha, limiteMargens);
+	    "-D = %d - Tamanho de cada pixel\n"
+	    "Pressione Enter para continuar...\n", velocidadeDoBarco, larguraDoRio, seed, fluxoDesejado, verbose, pIlha, dIlha, limiteMargens, size);
     getchar();
   }
     
