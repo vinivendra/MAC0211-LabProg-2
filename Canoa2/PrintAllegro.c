@@ -25,7 +25,7 @@ typedef int BOOL;
 void outputArray (pixel **array, int altura, int largura, int indice) {
     ALLEGRO_COLOR terra = al_map_rgb(110, 60, 40);
     ALLEGRO_COLOR agua = al_map_rgb(51, 153, 255);
-    ALLEGRO_COLOR ilha = al_map_rgb(180, 0, 0);
+    ALLEGRO_COLOR ilha = al_map_rgb(6, 96, 0);
     ALLEGRO_COLOR color = al_map_rgb(51, 51, 51);
     
     int i, j;
@@ -41,8 +41,9 @@ void outputArray (pixel **array, int altura, int largura, int indice) {
         int TMargemEsquerda = margemEsquerda(array[(i+indice)%altura]);
         int TMargemDireita = margemDireita(array[(i+indice)%altura], largura);
         
-        for (j = 0; j < TMargemEsquerda - 2; j++)
-            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
+        al_draw_filled_rectangle(0, size*i, size*(TMargemEsquerda - 2), size*(i+1), terra);
+        
+        j = TMargemEsquerda - 2;
         
         if (tipo(&array[(i+indice+1)%altura][j+2]) == TERRA) {
             al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
@@ -70,11 +71,20 @@ void outputArray (pixel **array, int altura, int largura, int indice) {
                     ilha0 = j;
                 if (j > ilhaf)
                     ilhaf = j;
-                al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), ilha);
             }
-            else
-                al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), agua);
         }
+        
+        
+        if (ilhaf != 0) {
+            al_draw_filled_rectangle(size*TMargemEsquerda, size*i, size*(ilha0 + 1), size*(i+1), agua);
+            al_draw_filled_rectangle(size*(ilhaf), size*i, size*(largura - TMargemDireita), size*(i+1), agua);
+            al_draw_filled_rounded_rectangle(size*ilha0,size*i,size*(ilhaf+1),size*(i+1),3,3, ilha);
+        }
+        else {
+            al_draw_filled_rectangle(size*TMargemEsquerda, size*i, size*(largura - TMargemDireita), size*(i+1), agua);
+        }
+        ilha0 = 999999;
+        ilhaf = 0;
         
         
         
@@ -96,8 +106,7 @@ void outputArray (pixel **array, int altura, int largura, int indice) {
             al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
         }
         
-        for (j = largura - TMargemDireita; j < largura; j++)
-            al_draw_filled_rectangle(size*j, size*i, size*(j+1), size*(i+1), terra);
+        al_draw_filled_rectangle(size*(largura - TMargemDireita), size*i, size*(largura), size*(i+1), terra);
         
         
         /*for (i = 0; i < altura; i ++) { /* Imprime cada linha, de trás para frente */

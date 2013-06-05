@@ -57,7 +57,7 @@ int main (int argc, char *argv[]) {
     getArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens);
     corrigeArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado, &verbose, &dIlha, &pIlha, &limiteMargens);
     
-    
+    printf("BLAAA\n");
     
     if (verbose) {
         printf ("\t \t Opcoes disponiveis: \n"
