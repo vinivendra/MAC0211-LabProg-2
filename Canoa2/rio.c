@@ -5,7 +5,7 @@
 #include "Output.h"
 #include "pixel.h"
 
-#define limiteDasIlhas 0.8
+#define limiteDasIlhas 0.5
 
 /*
  Variável gloabal

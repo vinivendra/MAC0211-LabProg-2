@@ -8,15 +8,6 @@
  Implementações
  */
 
-
-static void clear_newlines()
-{
-    int c;
-    do
-    {
-        c = getchar();
-    } while (c != '\n' && c != EOF);
-}
 /*Faz a leitura dos parâmetros e permite a usuário corrigir alguma entrada incorreta*/
 int getArgs(int argc,char *argv[],float *velocidadeDoBarco, int *larguraDoRio, int *seed, int *fluxoDesejado, int *verbose, int *dIlha, float *pIlha, float *limiteMargens) {
     int read = 0;

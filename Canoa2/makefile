@@ -1,4 +1,4 @@
-execName = ep2
+execName = ep3
 testeName = teste
 execOptions =  -g -o $(execName) -lm -lc -lallegro -lallegro_primitives -lallegro_dialog
 testeOptions = -g -o $(testeName) -lm -lc -lallegro -lallegro_primitives -lallegro_dialog
