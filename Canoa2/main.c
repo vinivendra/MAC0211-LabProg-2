@@ -23,7 +23,7 @@
 #define distanciaEntreIlhasInicial 25
 #define probabilidadeDeObstaculosInicial 0.3
 #define limiteDasMargens 0.25
-#define tamanhoInicial 5
+#define tamanhoInicial 3
 
 /*
  BOOL
