@@ -14,8 +14,6 @@
 /*
  Defines de valores iniciais
  */
-#pragma mark Defines
-
 #define velocidadeDoBarcoInicial 50
 #define larguraDoRioInicial 100
 #define fluxoDesejadoInicial 50
@@ -52,7 +50,6 @@ enum KEYS {
 /*
  Protótipos
  */
-#pragma mark Protótipos
 
 void freeOutput(ALLEGRO_DISPLAY *display, ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_TIMER *timer);
 BOOL STinitAllegro (int larguraDoRio, int size, float velocidadeDoBarco);
@@ -60,7 +57,6 @@ BOOL STinitAllegro (int larguraDoRio, int size, float velocidadeDoBarco);
 /*
  main
  */
-#pragma mark main
 
 int main (int argc, char *argv[]) {
     /*
@@ -234,7 +230,6 @@ int main (int argc, char *argv[]) {
     return 0;
 }
 
-#pragma mark Funções auxiliares
 
 
 BOOL STinitAllegro (int larguraDoRio, int size, float velocidadeDoBarco){
