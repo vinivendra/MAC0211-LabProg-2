@@ -14,7 +14,7 @@
 \usetikzlibrary{arrows,positioning,automata}
 \begin{document}
 
-\begin{center}{\Large \bf Documenta\c{c}ão EP2-A Canoagem \\ }\end{center}
+\begin{center}{\Large \bf Documenta\c{c}ão EP3-A Canoagem \\ }\end{center}
 \begin{center}{\Large \bf Manual do Desenvolvedor\\ }\end{center}
 
 \begin{center}
@@ -41,10 +41,10 @@ Instituto de Matemática e Estatística - IME USP \\
 \newpage
 
 \section{Introdu\c{c}ão}
-Esta documenta\c{c}ão apresenta uma completa descri\c{c}ão do funcionamento do exercício programa 2-A e seus algoritmos, divido através de sua implementa\c{c}ão nos .c e .h .
+Esta documenta\c{c}ão apresenta uma completa descri\c{c}ão do funcionamento do exercício programa 2-B e seus algoritmos, divido através de sua implementa\c{c}ão nos .c e .h .
 
 \section{Pixel}
-Para modelar o funcionamento da grade decidiu-se implementar um matriz de tipo pixel. Nesta estrura existe dois campos, \textit{velocidade} e \textit{tipo} que guardam a velocidade e o tipo do ponto respectivamente. Para lidar com estar estrutura foi implemetado as seguinte fun\c{c}ões:
+Para modelar o funcionamento da grade decidiu-se implementar um matriz de tipo pixel. Nesta estrura existe dois campos, \textit{velocidade} e \textit{tipo} que guardam a velocidade e o tipo do ponto respectivamente. Para lidar com esta estrutura foi implemetado as seguinte fun\c{c}ões:
 \begin{enumerate}
 \item[•]{velocidade - Retorna a velocidade de um ponto.}
 \item[•]{tipo - Retorna o tipo de um ponto.} 
@@ -81,17 +81,15 @@ onde $\Phi$ é o fluxo inserido pelo usuário.
 A gera\c{c}ão das linhas subsequentes funciona de modo semelhante a fun\c{c}ão primeiraLinha. Cada nova linha utiliza a anterior como base para sua cria\c{c}ão. As diferen\c{c}as residem nos métodos que lidam com as margens e com a velocidade das linhas. O método \textit{aleatorizaMargem} analisa as margens anteriores e sorteia um valor inteiro no intervalo $[-1,1]$. Este valor é somado as margens da linha anterior e atribuindo-se à nova, respeitando sempre o limite das margens, isso garante que a mudan\c{c}a entre a margem anterior e atual seja suave. Para gera\c{c}ão de velocidades na nova linha o método \textit{velocidadeProximaLinha} é empregado. Com intuito de preservar a suavidade da velocidade entre pontos é tomado como base a velocidade do ponto anterior e realizado o produto desta com um valor aleatório real no interválo $[0.9,1.1]$, e no caso do ponto anterior ter velocidade zero, realiza-se um outro cálculo.
 
 \section{Grade}
-Esta interface concentra o método de cria\c{c}ão da matriz e dos frames utilizados durante o programa. O método \textit{initGrade} aloca dinamicamente uma matriz de tamanho $altura \times largura$, as quais tem valor default de 30 por 100 respetivamente. Em \textit{criaPrimeiroFrame} cria-se a primeira imagem que será impressa, a constru\c{c}ão das linhas acontece de baixo para cima, indo da ultima linha da matriz até a primeira. A mesma ideia é utilizada em \textit{criaProximoFrame}, entretanto nesta é criada apenas uma nova linha e inserida na posi\c{c}ão $(indice + alturaDaGrade -1)\text{ \, } mod \text{ \, } alturaDaGrade$ . Um método de desaloca\c{c}ão de memória, \textit{freeGrade}, foi implementado para situa\c{c}ões futuras nas quais a execu\c{c}ão do programa não seja interrompida pelo comando CTRL+C.
+Esta interface concentra o método de cria\c{c}ão da matriz e dos frames utilizados durante o programa. O método \textit{initGrade} aloca dinamicamente uma matriz de tamanho $altura \times largura$, as quais tem valor default de 30 por 100 respetivamente. Em \textit{criaPrimeiroFrame} cria-se a primeira imagem que será impressa, a constru\c{c}ão das linhas acontece de baixo para cima, indo da ultima linha da matriz até a primeira. A mesma ideia é utilizada em \textit{criaProximoFrame}, entretanto nesta é criada apenas uma nova linha e inserida na posi\c{c}ão $(indice + alturaDaGrade -1)\text{ \, } mod \text{ \, } alturaDaGrade$ . Um método de desaloca\c{c}ão de memória, \textit{freeGrade}, foi implementado para desalocar a memória requisitada ao final do programa.
 
-\section{PrintASCII}
-Esta interface lida com a impressão dos frames na tela para o usuário. No método \textit{outputArray} seleciona-se a linha que deve ser impressa e chama-se o método \textit{outputLine} que cuida da impressão dos caracteres. Uma particularidade ocorre no método \textit{outputArray}, utiliza-se rela\c{c}ões de congruência (mod) para implementar o buffer circular de impressão, a primeira linha a ser impressa será a ultima que foi criada na interface \textit{Grade}.
 
 \section{Util}
-Implementado nesta interface está a fun\c{c}ão \textit{getArgs} que faz a leitura dos parâmetros passado pelo usuário e atribuido as suas respectivas variáveis. Caso seja passado algum parâmetro desconhecido é mostrado ao usuário uma tabela com as entradas possíveis, é perguntado se este quer realizar um novo input ou se deseja abortar o programa. Após a chamada de \textit{getArgs} um outro método, 
+Implementado nesta interface está a fun\c{c}ão \textit{getArgs} que faz a leitura dos parâmetros passado pelo usuário e atribui as suas respectivas variáveis. Após a chamada de \textit{getArgs} um outro método, 
 \textit{corrigeArgs}, é chamado para analisar as entradas fornecidas pelo usuário com intuito que corrigir possíveis parâmetros que comprometam a correta execu\c{c}ão do programa.
 
 \section{main}
-Esta é a interface client do programa, nela são chamadas todas outras fun\c{c}ões que realizam o trabalho bruto de cria\c{c}ão, gerenciamento e impressão da simula\c{c}ão. No anexo 3 está descrito o fluxo de informa\c{c}ões trocadas entre o cliente e suas diversas interfaces. Para encerar a execu\c{c}ão do programa o usuário deve pressionar o comando CTRL+D, abortando assim o programa. Pelo fato do programa ser abortado sua execu\c{c}ão nunca chegará ao final e com isso a fu\c{c}ão de desaloca\c{c}ão de memória \textit{freeGrade} não é chamada, decidiu-se declarar e implementar esta fun\c{c}ão como uma política de boas práticas de programa\c{c}ão, já que o cliente solicita a interface uma aloca\c{c}ão de memória é obriga\c{c}ão daquele a sua desaloca\c{c}ão, mesmo que não seja chamada a fun\c{c}ão já existe para futuros estágios em que será solicitada.
+Esta é a interface client do programa, nela são chamadas todas outras fun\c{c}ões que realizam o trabalho bruto de cria\c{c}ão, gerenciamento e impressão da simula\c{c}ão. No anexo 3 está descrito o fluxo de informa\c{c}ões trocadas entre o cliente e suas diversas interfaces. Para encerar a execu\c{c}ão do programa o usuário deve pressionar o comando \textbf{ESC}, que sai do looping principal do programa. Ao fim a memória alocada é devolvida ao sistema e as interfaces do Allegro são finalizadas.
 
 \section{teste}
 Esta interface client é semelhante a main, diferindo-se na sua utilidade. Este client faz a execu\c{c}ão dos métodos do programa com intuito de testar se as saídas do programa são concretas e confiáveis. A principal fun\c{c}ão de teste é \textit{calculaVariacoes} que desempenha diversos cálculos. São gerados 50 frames e aplicado o método \textit{calculaVariacoes} procurando os seguintes valores:
@@ -125,10 +123,11 @@ Uma elipse foi escolhida para representar a posição do barco, sua posição po
 \subsection{Makefile}
 No makefile do programa existem três receitas de compila\c{c}ão que geram três alvos diferentes:
 \begin{enumerate}
-\item[-]{make - Gera o executável ep2 que é o programa de simula\c{c}ão do rio propriamente dito}
+\item[-]{make - Gera o executável ep3 que é o programa de simula\c{c}ão do rio propriamente dito}
 \item[-]{make teste - Gera o executável teste que realiza as simula\c{c}ões de teste do rio e a gera\c{c}ão do relatório}
 \item[-]{make clean - Limpa os arquivos objeto e executáveis gerados pela execu\c{c}ão das outras receitas}
 \end{enumerate}
+Optamos por conservar os arquivos ligados ao executável teste e sua receita no makefile, a confiabilidade e robustez da execução ainda podem ser verificadas com o programa.
 \subsection{Parâmetros de execu\c{c}ão}
 A simula\c{c}ão do rio pode ser feita sem que o usuário entre com qualquer parâmetro de defini\c{c}ão, gra\c{c}as a valores de default implementados. Entretando, caso seja do desejo do usuário pode-se entrar com diversos parâme-tros de defini\c{c}ão para execu\c{c}ão da simula\c{c}ão ou do teste, os quais são os seguintes:
 \begin{enumerate}
@@ -140,11 +139,27 @@ A simula\c{c}ão do rio pode ser feita sem que o usuário entre com qualquer par
 \item[]{-dI $\rightarrow$ Distancia minima entre obstaculos}
 \item[]{-lM $\rightarrow$ Limite das margens}
 \item[]{-v  $\rightarrow$ Verbose}
-\item[]{-D  $\rightarrow$ Tamanho de cada pixel}
+\item[]{-D  $\rightarrow$ Tamanho do lado de cada quadrado de pixel}
 \end{enumerate} 
 
 
-Foto da execu\c{c}ão do programa
+\newpage
+\subsection{Fotos da execu\c{c}ão}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[scale=0.30]{figura1.png}
+\caption{Execu\c{c}ão 1}
+
+\end{center}
+\end{figure}
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[scale=0.4]{figura2.png}
+\caption{Execu\c{c}ão 2}
+\end{center}
+\end{figure}
 
 
 \newpage
@@ -272,10 +287,10 @@ Foto da execu\c{c}ão do programa
   \node[state]          (Q) [ left =of P]    {$cArgs$};
   \node[state]          (M) [above =of P]    {$initG$};
   \node[state]          (D) [above right =of P]    {$cPrFrame$};
-  \node[state]          (F) [below left =of P]    {$nanoS$};
-  \node[state]          (N) [below right =of F]    {$clrScr$};
-  \node[state]          (C) [right =of N]    {$OutA$};
+  \node[state]          (C) [below =of P]    {$OutA$};
   \node[state]          (E) [below right =of D]    {$cPxFrame$};
+  \node[state]          (F) [right =of C]    {$fGrd$};
+  \node[state]          (T) [right =of F]    {$Fim$};
 
 \tikzset{mystyle/.style={<->,double=orange}} 
 \tikzset{every node/.style={fill=white}} 
@@ -284,17 +299,17 @@ Foto da execu\c{c}ão do programa
       (P)     edge [mystyle]    node   {$3$} (M) 
       (P)     edge [mystyle]    node   {$4$} (D)
       (P)     edge [mystyle]    node   {$5$} (C)
-      (P)     edge [mystyle]    node   {$7$} (E) 
-      (P)     edge [mystyle]    node   {$8$} (F)
-      (P)     edge [mystyle]    node   {$6$} (N);
+      (P)     edge [mystyle]    node   {$6$} (E)
+      (C)     edge [mystyle]    node   {$7$} (F)
+      (F)     edge [mystyle]    node   {$8$} (T);
+
+
       
       \tikzset{mystyle/.style={->,double=orange}} 
 \tikzset{every node/.style={fill=white}} 
 \path
       (E)     edge [mystyle]    node   {$loop$} (C)
-      (C)     edge [mystyle]    node   {$loop$} (N) 
-      (N)     edge [mystyle]    node   {$loop$} (F)
-      (F)     edge [mystyle]    node   {$loop$} (E);
+      (C)     edge [mystyle]    node   {$loop$} (E);
 
 \textbf{\text{ primeiraLinha - Legenda }}
 \end{tikzpicture}
@@ -305,10 +320,9 @@ Foto da execu\c{c}ão do programa
 \item[-]{cArgs - corrigeArgs}
 \item[-]{initG - initGrade}
 \item[-]{cPrFrame - criaPrimeiroFrame}
-\item[-]{nanoS - nanoSleep}
-\item[-]{clsScr - clearScreen}
 \item[-]{OutA - OutputArray}
 \item[-]{cPxFrame - criaProximoFrame}
+\item[-]{fGrd - freeGrade}
 \end{enumerate}
 
 \end{document}

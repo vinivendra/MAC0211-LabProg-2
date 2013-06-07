@@ -17,7 +17,7 @@ int main(int argc, char* argv[]){
   int margDirMin = 10000000, margDirMax = 0;
   int indice = 0;
   int j;
-
+  int size;
   float velocidadeDoBarco = 1;
   int larguraDoRio = 16;
   int fluxoDesejado = 1;
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]){
   int linhasCorretas = 0;
 
   getArgs(argc, argv, &velocidadeDoBarco, &larguraDoRio, &seed, &fluxoDesejado,
-	  &verbose, &dIlha, &pIlha, &limiteMargens);
+	  &verbose, &dIlha, &pIlha, &limiteMargens, &size);
 
   srand(seed);
 
